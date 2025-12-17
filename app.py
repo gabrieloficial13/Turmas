@@ -2,7 +2,7 @@ import streamlit as st
 
 # Lista de utilizadores
 users = [
-    {"user": "gabriel", "pass": "1234", "numEscolar": "12345"},
+    {"user": "Administrador", "pass": "adm.turmas001132", "numEscolar": "001013"},
     {"user": "maria", "pass": "abcd", "numEscolar": "67890"},
     {"user": "joao", "pass": "senha", "numEscolar": "54321"}
 ]
