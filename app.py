@@ -1,13 +1,15 @@
 import streamlit as st
 
-# Lista de utilizadores
+# Lista de utilizadores (alunos e professores)
 users = [
-    {"user": "Administrador", "pass": "adm.turmas001132", "numEscolar": "001013"},
-    {"user": "maria", "pass": "abcd", "numEscolar": "67890"},
-    {"user": "joao", "pass": "senha", "numEscolar": "54321"}
+    {"user": "gabriel", "pass": "1234", "numEscolar": "12345", "role": "aluno"},
+    {"user": "maria", "pass": "abcd", "numEscolar": "67890", "role": "aluno"},
+    {"user": "joao", "pass": "senha", "numEscolar": "54321", "role": "aluno"},
+    {"user": "prof_carlos", "pass": "prof123", "role": "professor"},
+    {"user": "prof_ana", "pass": "prof456", "role": "professor"}
 ]
 
-# Estado da sessão para login
+# Estado da sessão
 if "userAtual" not in st.session_state:
     st.session_state.userAtual = None
 if "login_ok" not in st.session_state:
@@ -28,12 +30,16 @@ if not st.session_state.login_ok:
         if encontrado:
             st.session_state.userAtual = encontrado
             st.session_state.login_ok = True
-            st.success("Login correto! Agora insere o número escolar.")
+            if encontrado["role"] == "aluno":
+                st.success("Login correto! Agora insere o número escolar.")
+            else:
+                st.session_state.verificacao_ok = True  # Professores não precisam de número escolar
+                st.success("Login correto! Bem-vindo professor.")
         else:
             st.error("Usuário ou senha incorretos.")
 
-# Etapa 2: Verificação
-elif not st.session_state.verificacao_ok:
+# Etapa 2: Verificação (só para alunos)
+elif not st.session_state.verificacao_ok and st.session_state.userAtual["role"] == "aluno":
     st.header("Verificação")
     numEscolar = st.text_input("Número Escolar")
     if st.button("Confirmar"):
@@ -43,22 +49,36 @@ elif not st.session_state.verificacao_ok:
         else:
             st.error("Número escolar inválido.")
 
-# Página principal (index)
+# Página principal
 else:
-    st.header(f"Bem-vindo, {st.session_state.userAtual['user']} 👋")
-    st.subheader("📚 Página Principal")
+    role = st.session_state.userAtual["role"]
 
-    # Secções
-    st.markdown("### 📝 TPCs")
-    st.write("Aqui podes ver e adicionar trabalhos de casa.")
+    if role == "aluno":
+        st.header(f"Área do Aluno: {st.session_state.userAtual['user']}")
+        st.markdown("### 📝 TPCs")
+        st.write("Lista de trabalhos de casa atribuídos.")
+        st.markdown("### 📊 Testes")
+        st.write("Datas e notas dos testes.")
+        st.markdown("### 📂 Trabalhos de Casa")
+        st.write("Entrega e organização dos trabalhos.")
+        st.markdown("### 💬 Chat")
+        mensagem = st.text_input("Mensagem para o chat")
+        if st.button("Enviar"):
+            st.write(f"Tu: {mensagem}")
 
-    st.markdown("### 📊 Testes")
-    st.write("Lista de testes e datas importantes.")
+    elif role == "professor":
+        st.header(f"Área do Professor: {st.session_state.userAtual['user']}")
+        st.markdown("### ➕ Criar TPC")
+        novo_tpc = st.text_area("Descrição do TPC")
+        if st.button("Publicar TPC"):
+            st.success("TPC publicado com sucesso!")
 
-    st.markdown("### 📂 Trabalhos de Casa")
-    st.write("Entrega e organização dos trabalhos.")
+        st.markdown("### ➕ Criar Teste")
+        novo_teste = st.text_input("Título do Teste")
+        if st.button("Publicar Teste"):
+            st.success("Teste publicado com sucesso!")
 
-    st.markdown("### 💬 Chat")
-    mensagem = st.text_input("Escreve uma mensagem para o chat")
-    if st.button("Enviar"):
-        st.write(f"Tu: {mensagem}")
+        st.markdown("### 💬 Chat com Alunos")
+        mensagem_prof = st.text_input("Mensagem para os alunos")
+        if st.button("Enviar Mensagem"):
+            st.write(f"Professor: {mensagem_prof}")
