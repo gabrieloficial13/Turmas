@@ -6,7 +6,7 @@ users = [
     {"user": "maria", "pass": "abcd", "numEscolar": "67890", "role": "aluno"},
     {"user": "joao", "pass": "senha", "numEscolar": "54321", "role": "aluno"},
     {"user": "prof_carlos", "pass": "prof123", "role": "professor"},
-    {"user": "prof_ana", "pass": "prof456", "role": "professor"}
+    {"user": "Administrador", "pass": "passwordprivadogabriel2013", "role": "professor"}
 ]
 
 # Estado da sessão
