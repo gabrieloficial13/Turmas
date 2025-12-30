@@ -7,9 +7,9 @@ from datetime import date
 # --------------------------------------------------------------------
 USERS_DB = {
     "aluno1": {
-        "password": "1234",
-        "numero_escolar": "2023001",
-        "nome": "João Silva"
+        "password": "2026",
+        "numero_escolar": "202526",
+        "nome": "Testes"
     },
     "aluna2": {
         "password": "abcd",
